@@ -1,10 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-plugins {
-	id("org.springframework.boot") version "2.6.3"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+plugins{
+	application
 	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.spring") version "1.6.10"
 }
 
 group = "com.github.thechenderson"
@@ -16,12 +14,17 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.apache.logging.log4j:log4j-api-kotlin:1.1.0")
+	implementation("org.apache.logging.log4j:log4j-api:2.14.1")
+	implementation("org.apache.logging.log4j:log4j-core:2.14.1")
+	implementation("io.ktor:ktor-server-core:2.0.0-beta-1")
+	implementation("io.ktor:ktor-server-netty:2.0.0-beta-1")
+	implementation("io.ktor:ktor-server-status-pages:2.0.0-beta-1")
+	implementation("io.ktor:ktor-server-default-headers:2.0.0-beta-1")
+}
+
+application {
+	mainClass.set("com.github.thechenderson.advancednetworksecuritycourework.Application")
 }
 
 tasks.withType<KotlinCompile> {
