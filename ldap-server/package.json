@@ -1,0 +1,7 @@
+{
+  "name": "ldap-server",
+  "version": "1.0.0",
+  "dependencies": {
+    "ldapjs": "^2.3.1"
+  }
+}
