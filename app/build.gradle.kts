@@ -28,7 +28,6 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
-    implementation("io.ktor:ktor-server-thymeleaf-jvm:$ktorVersion")
     implementation("org.slf4j:slf4j-api:1.7.5")
     implementation("org.slf4j:slf4j-log4j12:1.7.5")
     implementation(kotlin("stdlib-jdk8"))
