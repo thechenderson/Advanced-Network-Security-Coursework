@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const server = http.createServer((req, res) => {
     console.log(`${new Date()} Request was made: ${req.url}`);
-    const readStream = fs.createReadStream('./Main.class');
+    const readStream = fs.createReadStream('./exploit/build/classes/kotlin/main/Exploit.class');
     readStream.pipe(res);
 })
 
